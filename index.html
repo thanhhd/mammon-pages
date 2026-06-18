@@ -3,36 +3,243 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mammon RPG</title>
+  <meta name="description" content="Mammon: The Gilded Rot — A dark turn-based ARPG. Hunt legendary loot, master cold and lightning skills, and descend into Mammon's cursed vaults." />
+  <title>Mammon: The Gilded Rot — Dark Action RPG</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0d0a07; color: #e8d9b0; font-family: Georgia, serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    header { width: 100%; background: #1a1208; border-bottom: 1px solid #4a3520; padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
-    header h1 { font-size: 1.6rem; color: #f0c060; letter-spacing: 2px; }
-    header span { color: #a08050; font-size: 0.9rem; }
-    main { max-width: 720px; width: 100%; padding: 48px 24px; }
-    h2 { color: #f0c060; font-size: 1.3rem; margin-bottom: 12px; border-bottom: 1px solid #3a2810; padding-bottom: 8px; }
-    p { line-height: 1.7; color: #c8b88a; margin-bottom: 16px; }
-    .links { display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap; }
-    .links a { color: #f0c060; text-decoration: none; border: 1px solid #4a3520; padding: 10px 20px; border-radius: 4px; font-size: 0.95rem; }
-    .links a:hover { background: #1a1208; }
-    footer { margin-top: auto; padding: 24px; color: #5a4a30; font-size: 0.8rem; text-align: center; }
+    :root {
+      --gold: #f0c060;
+      --gold-dim: #a07838;
+      --bg: #0a0806;
+      --bg2: #130f09;
+      --bg3: #1c1610;
+      --border: #3a2810;
+      --text: #d4c49a;
+      --text-muted: #7a6840;
+    }
+    body { background: var(--bg); color: var(--text); font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav .logo { color: var(--gold); font-size: 1.2rem; letter-spacing: 3px; font-weight: bold; text-decoration: none; }
+    nav .nav-links { display: flex; gap: 24px; }
+    nav .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-family: -apple-system, sans-serif; }
+    nav .nav-links a:hover { color: var(--gold); }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: linear-gradient(180deg, #1c1205 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero .eyebrow {
+      color: var(--gold-dim);
+      font-family: -apple-system, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      color: var(--gold);
+      letter-spacing: 4px;
+      text-shadow: 0 2px 24px rgba(240,160,40,0.3);
+      line-height: 1.15;
+    }
+    .hero h1 span { display: block; font-size: 0.45em; color: #c8a050; letter-spacing: 6px; margin-top: 8px; }
+    .hero .tagline {
+      margin: 24px auto 0;
+      max-width: 540px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      font-family: -apple-system, sans-serif;
+      line-height: 1.7;
+    }
+
+    /* ── Store buttons ── */
+    .store-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg3);
+      border: 1px solid var(--gold-dim);
+      border-radius: 8px;
+      padding: 12px 22px;
+      text-decoration: none;
+      color: var(--text);
+      font-family: -apple-system, sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .store-btn:hover { border-color: var(--gold); background: #231a0d; }
+    .store-btn .store-icon { font-size: 1.6rem; }
+    .store-btn .store-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .store-btn .store-text small { font-size: 0.7rem; color: var(--text-muted); }
+    .store-btn .store-text strong { font-size: 1rem; color: var(--gold); }
+
+    /* ── Features ── */
+    .features {
+      max-width: 900px;
+      margin: 64px auto;
+      padding: 0 24px;
+    }
+    .section-title {
+      text-align: center;
+      color: var(--gold);
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: var(--gold-dim);
+      margin: 12px auto 0;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px;
+    }
+    .feature-card .icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .feature-card h3 { color: var(--gold); font-size: 1rem; margin-bottom: 8px; letter-spacing: 1px; }
+    .feature-card p { color: var(--text-muted); font-size: 0.9rem; font-family: -apple-system, sans-serif; line-height: 1.6; }
+
+    /* ── Story ── */
+    .story {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .story blockquote {
+      max-width: 620px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .story blockquote::before { content: '\201C'; color: var(--gold-dim); font-size: 3rem; line-height: 0.5; vertical-align: -0.4em; margin-right: 4px; }
+    .story blockquote::after  { content: '\201D'; color: var(--gold-dim); font-size: 3rem; line-height: 0.5; vertical-align: -0.4em; margin-left:  4px; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    footer .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    footer .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-family: -apple-system, sans-serif; }
+    footer .footer-links a:hover { color: var(--gold); }
+    footer p { color: var(--text-muted); font-size: 0.8rem; font-family: -apple-system, sans-serif; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>MAMMON</h1>
-    <span>Dark Action RPG</span>
-  </header>
-  <main>
-    <h2>A world corrupted by greed</h2>
-    <p>Mammon is a dark action RPG set in Aurelia — a city decaying under the grip of Mammon, Prince of Greed. Play as a Sorceress, hunt for legendary loot, and unravel a conspiracy that runs deeper than anyone suspects.</p>
-    <p>Deep Diablo-style item system. Strategic turn-based combat. Rich narrative with branching quests and faction choices.</p>
-    <div class="links">
+
+  <nav>
+    <a class="logo" href="index.html">MAMMON</a>
+    <div class="nav-links">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <p class="eyebrow">Now Available</p>
+    <h1>MAMMON<span>The Gilded Rot</span></h1>
+    <p class="tagline">
+      Descend into Aurelia — a city rotting from within under the grip of Mammon, Prince of Greed.
+      Hunt legendary loot, master elemental skills, and uncover a conspiracy older than the city itself.
+    </p>
+    <div class="store-buttons">
+      <a class="store-btn" href="https://apps.apple.com/app/id6772534350" target="_blank" rel="noopener">
+        <span class="store-icon">🍎</span>
+        <span class="store-text">
+          <small>Download on the</small>
+          <strong>App Store</strong>
+        </span>
+      </a>
+      <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.thanhbt001.mammon" target="_blank" rel="noopener">
+        <span class="store-icon">▶</span>
+        <span class="store-text">
+          <small>Get it on</small>
+          <strong>Google Play</strong>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2 class="section-title">Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">⚔️</div>
+        <h3>Deep Skill Trees</h3>
+        <p>Master Cold, Lightning, and Fire skill trees. Combine T1+T2 synergies for devastating chill and storm combos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🗡️</div>
+        <h3>Diablo-Style Loot</h3>
+        <p>Hundreds of items with random affixes, set bonuses, and rare drops. Every kill is a chance at something legendary.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🏰</div>
+        <h3>Hand-Crafted World</h3>
+        <p>Explore Sub-Arc 1 across 5 distinct zones — from the Quayside docks to Nobles' Vault deep in the cursed city.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎯</div>
+        <h3>Strategic Combat</h3>
+        <p>Turn-based encounters with real weight. No auto-battle — every decision matters. Boss fights require preparation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story">
+    <blockquote>
+      Gold flows like blood in Aurelia. Those who hunger for it never stop — they simply run out of time.
+      You won't be one of them.
+    </blockquote>
+  </section>
+
+  <footer>
+    <div class="footer-links">
       <a href="support.html">Support</a>
       <a href="privacy.html">Privacy Policy</a>
+      <a href="delete-account.html">Delete Account</a>
+      <a href="mailto:thanhbt001@gmail.com">Contact</a>
     </div>
-  </main>
-  <footer>© 2026 Thanh Bui Tuan · All rights reserved</footer>
+    <p>© 2026 Thanh Bui Tuan · All rights reserved</p>
+  </footer>
+
 </body>
 </html>
